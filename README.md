@@ -1,53 +1,30 @@
-# Dev Container Features: Self Authoring Template
+# Python Launcher for Unix (python-launcher)
 
-> This repo provides a starting point and example for creating your own custom [dev container Features](https://containers.dev/implementors/features/), hosted for free on GitHub Container Registry.  The example in this repository follows the [dev container Feature distribution specification](https://containers.dev/implementors/features-distribution/).  
->
-> To provide feedback to the specification, please leave a comment [on spec issue #70](https://github.com/devcontainers/spec/issues/70). For more broad feedback regarding dev container Features, please see [spec issue #61](https://github.com/devcontainers/spec/issues/61).
+Launch your Python interpreter the lazy/smart way!
 
 ## Example Contents
 
-This repository contains a _collection_ of two Features - `hello` and `color`. These Features serve as simple feature implementations.  Each sub-section below shows a sample `devcontainer.json` alongside example usage of the Feature.
+This repository contains a _collection_ of one Features - `python-launcher`.The sub-section below shows a sample `devcontainer.json` alongside example usage of the Feature.
 
-### `hello`
+### `python-launcher`
 
-Running `hello` inside the built container will print the greeting provided to it via its `greeting` option.
-
-```jsonc
-{
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/devcontainers/feature-starter/hello:1": {
-            "greeting": "Hello"
-        }
-    }
-}
-```
-
-```bash
-$ hello
-
-Hello, user.
-```
-
-### `color`
-
-Running `color` inside the built container will print your favorite color to standard out.
+Running `python-launcher` inside the built container.
 
 ```jsonc
 {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-        "ghcr.io/devcontainers/feature-starter/color:1": {
-            "favorite": "green"
-        }
+        "ghcr.io/oleksis/python-launcher/python-launcher:1": {}
     }
 }
 ```
 
 ```bash
-$ color
+$ py --help
 
-my favorite color is green
+Python Launcher for Unix 1.0.0
+usage: py [launcher-args] [python-args]
+...
 ```
 
 ## Repo and Feature Structure
@@ -56,10 +33,7 @@ Similar to the [`devcontainers/features`](https://github.com/devcontainers/featu
 
 ```
 ├── src
-│   ├── hello
-│   │   ├── devcontainer-feature.json
-│   │   └── install.sh
-│   ├── color
+│   ├── python-launcher
 │   │   ├── devcontainer-feature.json
 │   │   └── install.sh
 |   ├── ...
@@ -74,21 +48,20 @@ An [implementing tool](https://containers.dev/supporting#tools) will composite [
 
 All available options for a Feature should be declared in the `devcontainer-feature.json`.  The syntax for the `options` property can be found in the [devcontainer Feature json properties reference](https://containers.dev/implementors/features/#devcontainer-feature-json-properties).
 
-For example, the `color` feature provides an enum of three possible options (`red`, `gold`, `green`).  If no option is provided in a user's `devcontainer.json`, the value is set to "red".
+For example, the `python-launcher` feature provides an proposals of two possible options (`latest`, `1.0.0`). If no option is provided in a user's `devcontainer.json`, the value is set to "1.0.0".
 
 ```jsonc
 {
     // ...
     "options": {
-        "favorite": {
+        "version": {
             "type": "string",
-            "enum": [
-                "red",
-                "gold",
-                "green"
+            "proposals": [
+                "latest",
+                "1.0.0"
             ],
-            "default": "red",
-            "description": "Choose your favorite color."
+            "default": "1.0.0",
+            "description": "Select or enter a Python Launcher version"
         }
     }
 }
@@ -97,10 +70,11 @@ For example, the `color` feature provides an enum of three possible options (`re
 Options are exported as Feature-scoped environment variables.  The option name is captialized and sanitized according to [option resolution](https://containers.dev/implementors/features/#option-resolution).
 
 ```bash
-#!/bin/bash
+#!/bin/sh
+set -e
 
-echo "Activating feature 'color'"
-echo "The provided favorite color is: ${FAVORITE}"
+PYLAUNCH_VERSION=${VERSION}
+echo "Activating feature 'python-launcher' version v${PYLAUNCH_VERSION}"
 
 ...
 ```
@@ -122,13 +96,12 @@ Features are meant to be easily sharable units of dev container configuration an
 This repo contains a GitHub Action [workflow](.github/workflows/release.yaml) that will publish each feature to GHCR.  By default, each Feature will be prefixed with the `<owner/<repo>` namespace.  For example, the two Features in this repository can be referenced in a `devcontainer.json` with:
 
 ```
-ghcr.io/devcontainers/feature-starter/color:1
-ghcr.io/devcontainers/feature-starter/hello:1
+ghcr.io/oleksis/python-launcher/python-launcher:1
 ```
 
-The provided GitHub Action will also publish a third "metadata" package with just the namespace, eg: `ghcr.io/devcontainers/feature-starter`.  This contains information useful for tools aiding in Feature discovery.
+The provided GitHub Action will also publish a third "metadata" package with just the namespace, eg: `ghcr.io/oleksis/python-launcher`.  This contains information useful for tools aiding in Feature discovery.
 
-'`devcontainers/feature-starter`' is known as the feature collection namespace.
+'`oleksis/python-launcher`' is known as the feature collection namespace.
 
 ### Marking Feature Public
 
@@ -164,9 +137,7 @@ An example `devcontainer.json` can be found below.
 {
     "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
     "features": {
-     "ghcr.io/my-org/private-features/hello:1": {
-            "greeting": "Hello"
-        }
+     "ghcr.io/oleksis/python-launcher/python-launcher:1": {}
     },
     "customizations": {
         "codespaces": {
