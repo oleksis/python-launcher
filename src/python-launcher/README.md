@@ -1,14 +1,14 @@
-# Python Launcher for Unix (python-launcher)
 
-Launch your Python interpreter the lazy/smart way!
+
+# Python Launcher (python-launcher)
+
+Python Launcher for Unix
 
 ## Example Usage
 
 ```json
 "features": {
-    "ghcr.io/oleksis/python-launcher/python-launcher:1": {
-        "version": "1.0.0"
-    }
+    "ghcr.io/oleksis/python-launcher/python-launcher:1": {}
 }
 ```
 
@@ -22,4 +22,4 @@ Launch your Python interpreter the lazy/smart way!
 
 ---
 
-_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/devcontainers/feature-starter/blob/main/src/hello/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
+_Note: This file was auto-generated from the [devcontainer-feature.json](https://github.com/oleksis/python-launcher/blob/main/src/python-launcher/devcontainer-feature.json).  Add additional notes to a `NOTES.md`._
